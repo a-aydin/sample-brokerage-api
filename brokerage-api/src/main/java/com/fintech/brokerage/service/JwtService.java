@@ -7,15 +7,16 @@ import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.fintech.brokerage.enums.Role;
+
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.security.Keys;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Service
 public class JwtService {
@@ -35,12 +36,13 @@ public class JwtService {
         log.info("JwtService initialized with TTL: {} seconds", ttlSeconds);
     }
 
-    public String issueToken(UUID customerId, String username) {
+    public String issueToken(UUID customerId, String username, Role role) {
         Instant now = Instant.now();
         try {
 	        String token = Jwts.builder()
 	                .subject(username)
 	                .claim("customerId", customerId.toString())
+	                .claim("role", role.name())
 	                .issuedAt(Date.from(now))
 	                .expiration(Date.from(now.plusSeconds(ttlSeconds)))
 	                .signWith(key, Jwts.SIG.HS256)

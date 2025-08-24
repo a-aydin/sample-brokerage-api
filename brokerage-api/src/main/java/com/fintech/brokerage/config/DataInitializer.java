@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fintech.brokerage.entity.Asset;
 import com.fintech.brokerage.entity.Customer;
+import com.fintech.brokerage.enums.Role;
 import com.fintech.brokerage.repo.AssetRepository;
 import com.fintech.brokerage.repo.CustomerRepository;
 
@@ -19,16 +20,19 @@ public class DataInitializer {
     private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
 
     @Bean
-    CommandLineRunner seed(CustomerRepository customers, AssetRepository assetRepository, PasswordEncoder encoder) {
+    CommandLineRunner seed(CustomerRepository customerRepo, AssetRepository assetRepo, PasswordEncoder encoder) {
         return args -> {
-            if (customers.count() == 0) {
-                Customer customer1 = new Customer("alice", encoder.encode("alice123"));
-                customers.save(customer1);
-                Customer customer2 = new Customer("bob", encoder.encode("bob123"));
-                customers.save(customer2);
-                Customer customer3 = new Customer("John", encoder.encode("john123"));
-                customers.save(customer3);
-                log.info("Seeded customers: alice, bob, John");
+            if (customerRepo.count() == 0) {
+            	Customer admin = new Customer("admin", encoder.encode("admin123"), Role.ADMIN);
+            	customerRepo.save(admin);
+            	
+                Customer customer1 = new Customer("alice", encoder.encode("alice123"), Role.USER);
+                customerRepo.save(customer1);
+                Customer customer2 = new Customer("bob", encoder.encode("bob123"), Role.USER);
+                customerRepo.save(customer2);
+                Customer customer3 = new Customer("John", encoder.encode("john123"), Role.USER);
+                customerRepo.save(customer3);
+                log.info("Seeded customerRepo: admin, alice, bob, John");
             
             
 	            // Default Asset verileri
@@ -37,9 +41,9 @@ public class DataInitializer {
 	            Asset asset3 = new Asset(customer3, "TSLA", new BigDecimal("75.5000"), new BigDecimal("75.5000"));
 	            log.info("Seeded assets: TRY, GOOGL, TSLA");
 	            
-	            assetRepository.save(asset1);
-	            assetRepository.save(asset2);
-	            assetRepository.save(asset3);
+	            assetRepo.save(asset1);
+	            assetRepo.save(asset2);
+	            assetRepo.save(asset3);
             }
         };
     }

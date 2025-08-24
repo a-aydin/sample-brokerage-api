@@ -44,7 +44,7 @@ public class AuthController {
             throw new RuntimeException("Invalid credentials");
         }
 
-        String token = jwt.issueToken(c.getId(), c.getUsername());
+        String token = jwt.issueToken(c.getId(), c.getUsername(), c.getRole());
         log.info("Login successful for username: {}", req.getUsername());
 
         return ResponseEntity.ok(new TokenResponse(token));

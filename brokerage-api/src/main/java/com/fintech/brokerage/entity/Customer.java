@@ -6,6 +6,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import com.fintech.brokerage.enums.Role;
+
 @Entity
 @Table(name = "customer")
 public class Customer {
@@ -15,6 +17,10 @@ public class Customer {
 
     @Column(unique = true, nullable = false)
     private String username;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, columnDefinition = "varchar(20) default 'USER'")
+    private Role role = Role.USER; // USER or ADMIN
 
     @Column(nullable = false)
     private String passwordHash;
@@ -34,7 +40,18 @@ public class Customer {
         this.username = username;
         this.passwordHash = passwordHash;
     }
-
+    
+    public Customer(String username, String passwordHash, Role role) {
+        this.username = username;
+        this.passwordHash = passwordHash;
+        this.role = role;
+    }
+    
+    @PrePersist
+    protected void onCreate() {
+        this.createDate = Instant.now();
+    }
+    
     public UUID getId() {
     	return id; 
     }
@@ -56,9 +73,12 @@ public class Customer {
     public boolean isEnabled() { return enabled; }
     public List<Asset> getAssets() { return assets; }
 
-    @PrePersist
-    protected void onCreate() {
-        this.createDate = Instant.now();
-    }
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 }

@@ -41,35 +41,48 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String auth = request.getHeader("Authorization");
+
         if (auth != null && auth.startsWith("Bearer ")) {
             String token = auth.substring(7);
             try {
-            	SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+                SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
 
-            	Claims claims = Jwts.parser()
-            	        .verifyWith(key)
-            	        .build()
-            	        .parseSignedClaims(token)
-            	        .getPayload();
+                Claims claims = Jwts.parser()
+                        .verifyWith(key)
+                        .build()
+                        .parseSignedClaims(token)
+                        .getPayload();
 
                 String username = claims.getSubject();
                 String customerId = claims.get("customerId", String.class);
+                String role = claims.get("role", String.class); 
+
                 if (username != null && customerId != null && customerRepo.findByUsername(username).isPresent()) {
-                    List<GrantedAuthority> auths = List.of(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
-                    Map<String,Object> details = new HashMap<>();
+                    // Rol yoksa default USER
+                    String effectiveRole = (role != null) ? role : "USER";
+
+                    List<GrantedAuthority> auths = List.of(new SimpleGrantedAuthority("ROLE_" + effectiveRole));
+
+                    Map<String, Object> details = new HashMap<>();
                     details.put("customerId", customerId);
+                    details.put("role", effectiveRole);
+
                     Authentication a = new AbstractAuthenticationToken(auths) {
                         @Override public Object getCredentials() { return token; }
                         @Override public Object getPrincipal() { return username; }
                     };
-                    ((AbstractAuthenticationToken)a).setDetails(details);
-                    ((AbstractAuthenticationToken)a).setAuthenticated(true);
+
+                    ((AbstractAuthenticationToken) a).setDetails(details);
+                    ((AbstractAuthenticationToken) a).setAuthenticated(true);
+
                     SecurityContextHolder.getContext().setAuthentication(a);
                 }
             } catch (Exception e) {
                 log.warn("Invalid JWT: {}", e.getMessage());
             }
         }
+
         filterChain.doFilter(request, response);
     }
+
 }
