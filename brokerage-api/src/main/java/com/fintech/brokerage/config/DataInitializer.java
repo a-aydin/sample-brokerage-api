@@ -32,14 +32,14 @@ public class DataInitializer {
             
             
 	            // Default Asset verileri
-//	            Asset asset1 = new Asset(customer1, "TRY", new BigDecimal("500.0000"), new BigDecimal("500.0000"));
-//	            Asset asset2 = new Asset(customer2, "GOOGL", new BigDecimal("50.0000"), new BigDecimal("50.0000"));
-//	            Asset asset3 = new Asset(customer3, "TSLA", new BigDecimal("75.5000"), new BigDecimal("75.5000"));
-//	            log.info("Seeded assets: TRY, GOOGL, TSLA");
-//	            
-//	            assetRepository.save(asset1);
-//	            assetRepository.save(asset2);
-//	            assetRepository.save(asset3);
+	            Asset asset1 = new Asset(customer1, "TRY", new BigDecimal("500.0000"), new BigDecimal("500.0000"));
+	            Asset asset2 = new Asset(customer2, "GOOGL", new BigDecimal("50.0000"), new BigDecimal("50.0000"));
+	            Asset asset3 = new Asset(customer3, "TSLA", new BigDecimal("75.5000"), new BigDecimal("75.5000"));
+	            log.info("Seeded assets: TRY, GOOGL, TSLA");
+	            
+	            assetRepository.save(asset1);
+	            assetRepository.save(asset2);
+	            assetRepository.save(asset3);
             }
         };
     }
