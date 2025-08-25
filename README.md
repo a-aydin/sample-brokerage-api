@@ -38,7 +38,7 @@ cd sample-brokerage-api
 4. Access the Swagger UI at:<br>
 http://localhost:8080/swagger-ui/index.html
 
-**Notes**
+**Notes**<br>
 The project uses h2 database.<br>
 You need to get JWT before calling an endpoint.<br>
 Each customer can only call an endpoint for himself/herself. But admin user can call any endpoint for any customer.
