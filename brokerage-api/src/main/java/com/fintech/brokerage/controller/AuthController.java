@@ -11,7 +11,7 @@ import com.fintech.brokerage.controller.dto.LoginRequest;
 import com.fintech.brokerage.controller.dto.TokenResponse;
 import com.fintech.brokerage.entity.Customer;
 import com.fintech.brokerage.repo.CustomerRepository;
-import com.fintech.brokerage.service.JwtService;
+import com.fintech.brokerage.service.impl.JwtServiceImpl;
 
 @RestController
 @RequestMapping("/auth")
@@ -21,9 +21,9 @@ public class AuthController {
 
     private final CustomerRepository customerRepo;
     private final PasswordEncoder encoder;
-    private final JwtService jwt;
+    private final JwtServiceImpl jwt;
 
-    public AuthController(CustomerRepository customerRepo, PasswordEncoder encoder, JwtService jwt) {
+    public AuthController(CustomerRepository customerRepo, PasswordEncoder encoder, JwtServiceImpl jwt) {
         this.customerRepo = customerRepo;
         this.encoder = encoder;
         this.jwt = jwt;

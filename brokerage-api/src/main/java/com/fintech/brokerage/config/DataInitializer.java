@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fintech.brokerage.entity.Asset;
 import com.fintech.brokerage.entity.Customer;
+import com.fintech.brokerage.enums.AssetType;
 import com.fintech.brokerage.enums.Role;
 import com.fintech.brokerage.repo.AssetRepository;
 import com.fintech.brokerage.repo.CustomerRepository;
@@ -36,9 +37,9 @@ public class DataInitializer {
             
             
 	            // Default Asset verileri
-	            Asset asset1 = new Asset(customer1, "TRY", new BigDecimal("500.0000"), new BigDecimal("500.0000"));
-	            Asset asset2 = new Asset(customer2, "GOOGL", new BigDecimal("50.0000"), new BigDecimal("50.0000"));
-	            Asset asset3 = new Asset(customer3, "TSLA", new BigDecimal("75.5000"), new BigDecimal("75.5000"));
+	            Asset asset1 = new Asset(customer1, AssetType.TRY.getSymbol(), new BigDecimal("500.0000"), new BigDecimal("500.0000"));
+	            Asset asset2 = new Asset(customer2, AssetType.GOOGL.getSymbol(), new BigDecimal("50.0000"), new BigDecimal("50.0000"));
+	            Asset asset3 = new Asset(customer3, AssetType.TSLA.getSymbol(), new BigDecimal("75.5000"), new BigDecimal("75.5000"));
 	            log.info("Seeded assets: TRY, GOOGL, TSLA");
 	            
 	            assetRepo.save(asset1);

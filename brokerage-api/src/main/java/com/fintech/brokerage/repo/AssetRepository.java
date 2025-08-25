@@ -8,6 +8,6 @@ import com.fintech.brokerage.entity.Asset;
 import com.fintech.brokerage.entity.Customer;
 
 public interface AssetRepository extends JpaRepository<Asset, UUID> {
-    Optional<Asset> findByCustomerIdAndAssetName(Customer customerId, String assetName);
-    List<Asset> findAllByCustomerId(Customer customerId);
+    public Optional<Asset> findByCustomerIdAndAssetName(Customer customerId, String assetName);
+    public List<Asset> findAllByCustomerId(Customer customerId);
 }

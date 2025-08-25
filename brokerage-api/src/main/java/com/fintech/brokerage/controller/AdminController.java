@@ -11,8 +11,12 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
+	
     private final OrderService orderService;
-    public AdminController(OrderService orderService) { this.orderService = orderService; }
+    
+    public AdminController(OrderService orderService) {
+    	this.orderService = orderService; 
+    }
 
     @PostMapping("/orders/{id}/match")
     @PreAuthorize("hasRole('ADMIN')")

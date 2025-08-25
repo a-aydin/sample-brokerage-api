@@ -22,16 +22,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public UserDetailsService uds(@Value("${app.admin.username}") String adminUsername,
-//                                  @Value("${app.admin.password}") String adminPassword) {
-//        UserDetails admin = User.withUsername(adminUsername)
-//                .password(passwordEncoder().encode(adminPassword))
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(admin);
-//    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
         http
@@ -39,7 +29,8 @@ public class SecurityConfig {
             .headers(h -> h.frameOptions(f -> f.disable()))
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/actuator/health", "/h2-console/**", "/auth/login").permitAll()
+                .requestMatchers("/actuator/health", "/v3/api-docs/**", "/swagger-ui.html",
+                        "/swagger-ui/**", "/h2-console/**", "/auth/login").permitAll()
                 .anyRequest().authenticated()
             )
             .httpBasic(Customizer.withDefaults())

@@ -13,52 +13,51 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fintech.brokerage.entity.Asset;
 import com.fintech.brokerage.security.util.SecurityUtil;
-import com.fintech.brokerage.service.OrderService;
+import com.fintech.brokerage.service.AssetService;
 
 @RestController
 @RequestMapping("/api/assets")
 public class AssetController {
 
-    private static final Logger log = LoggerFactory.getLogger(AssetController.class);
+	private static final Logger log = LoggerFactory.getLogger(AssetController.class);
 
-    private final OrderService orderService;
+	private final AssetService assetService;
 
-    public AssetController(OrderService orderService) {
-        this.orderService = orderService;
-    }
+	public AssetController(AssetService assetService) {
+		this.assetService = assetService;
+	}
 
-    private void checkAccess(UUID customerId) {
-        if (SecurityUtil.isAdmin()) {
-            log.debug("Admin access granted for customerId={}", customerId);
-            return;
-        }
+	private void checkAccess(UUID customerId) {
+		if (SecurityUtil.isAdmin()) {
+			log.debug("Admin access granted for customerId={}", customerId);
+			return;
+		}
 
-        UUID tokenCustomerId = SecurityUtil.currentCustomerId()
-                .orElseThrow(() -> {
-                    log.warn("Access denied: no customer found in token while accessing customerId={}", customerId);
-                    return new AccessDeniedException("No customer in token");
-                });
+		UUID tokenCustomerId = SecurityUtil.currentCustomerId().orElseThrow(() -> {
+			log.warn("Access denied: no customer found in token while accessing customerId={}", customerId);
+			return new AccessDeniedException("No customer in token");
+		});
 
-        if (!tokenCustomerId.equals(customerId)) {
-            log.warn("Access denied: tokenCustomerId={} tried to access customerId={}", tokenCustomerId, customerId);
-            throw new AccessDeniedException("Forbidden");
-        }
+		if (!tokenCustomerId.equals(customerId)) {
+			log.warn("Access denied: tokenCustomerId={} tried to access customerId={}", tokenCustomerId, customerId);
+			throw new AccessDeniedException("Forbidden");
+		}
 
-        log.debug("Access granted: tokenCustomerId={} matches requested customerId={}", tokenCustomerId, customerId);
-    }
+		log.debug("Access granted: tokenCustomerId={} matches requested customerId={}", tokenCustomerId, customerId);
+	}
 
-    @GetMapping
-    public List<Asset> list(@RequestParam UUID customerId) {
-        log.info("Received request to list assets for customerId={}", customerId);
-        checkAccess(customerId);
+	@GetMapping
+	public List<Asset> list(@RequestParam UUID customerId) {
+		log.info("Received request to list assets for customerId={}", customerId);
+		checkAccess(customerId);
 
-        try {
-            List<Asset> assets = orderService.listAssets(customerId);
-            log.info("Returning {} assets for customerId={}", assets.size(), customerId);
-            return assets;
-        } catch (Exception ex) {
-            log.error("Unexpected error while listing assets for customerId={}", customerId, ex);
-            throw ex;
-        }
-    }
+		try {
+			List<Asset> assets = assetService.listAssets(customerId);
+			log.info("Returning {} assets for customerId={}", assets.size(), customerId);
+			return assets;
+		} catch (Exception ex) {
+			log.error("Unexpected error while listing assets for customerId={}", customerId, ex);
+			throw ex;
+		}
+	}
 }
