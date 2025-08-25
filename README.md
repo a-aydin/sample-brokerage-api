@@ -41,4 +41,10 @@ http://localhost:8080/swagger-ui/index.html
 **Notes**<br>
 The project uses h2 database.<br>
 You need to get JWT before calling an endpoint.<br>
-Each customer can only call an endpoint for himself/herself. But admin user can call any endpoint for any customer.
+Each customer can only call an endpoint for himself/herself. But admin user can call any endpoint for any customer.<br>
+You can obtain a JWT token by using the predefined users listed below.<br>
+|   Username   |   Password   | Role  |
+|--------------|--------------|-------|
+| admin        | admin123     | ADMIN |
+| alice        | alice123     | USER  |
+| bob          | bob123       | USER  |
