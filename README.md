@@ -38,12 +38,7 @@ cd sample-brokerage-api
 4. Access the Swagger UI at:<br>
 http://localhost:8080/swagger-ui/index.html
 
-**API Endpoints**
-
-POST /api/orders: Create a new order.
-
-GET /api/orders/{id}: Retrieve order details.
-
-PUT /api/orders/{id}/cancel: Cancel an existing order.
-
-PUT /api/orders/{id}/match: Match an order.
+**Notes**
+The project uses h2 database.<br>
+You need to get JWT before calling an endpoint.<br>
+Each customer can only call an endpoint for himself/herself. But admin user can call any endpoint for any customer.
