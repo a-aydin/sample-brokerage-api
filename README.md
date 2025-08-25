@@ -4,13 +4,13 @@ A RESTful API for simulating brokerage operations, including order management, a
 
 **Features**
 
-Order Management: Create, cancel, and match buy/sell orders.
+**Order Management:** Create, cancel, and match buy/sell orders.
 
-Asset Tracking: Manage customer assets and balances.
+**Asset Tracking:** Manage customer assets and balances.
 
-Swagger UI: Interactive API documentation for easy exploration.
+**Swagger UI:** Interactive API documentation for easy exploration.
 
-Unit Tests: Comprehensive test coverage for all endpoints.
+**Unit Tests:** Comprehensive test coverage for all endpoints.
 
 **Technologies**
 
@@ -26,16 +26,16 @@ Swagger UI
 
 **Getting Started**
 
-1. Clone the repository:
+1. Clone the repository:<br>
 git clone https://github.com/a-aydin/sample-brokerage-api.git
 
-2. Navigate to the project directory:
+2. Navigate to the project directory:<br>
 cd sample-brokerage-api
 
-3. Build and run the application:
+3. Build and run the application:<br>
 ./mvnw spring-boot:run
 
-4. Access the Swagger UI at:
+4. Access the Swagger UI at:<br>
 http://localhost:8080/swagger-ui/index.html
 
 **API Endpoints**
