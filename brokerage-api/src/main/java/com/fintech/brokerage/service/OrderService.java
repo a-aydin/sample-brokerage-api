@@ -5,6 +5,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.fintech.brokerage.entity.Customer;
 import com.fintech.brokerage.entity.Order;
 import com.fintech.brokerage.enums.OrderSide;
@@ -16,4 +19,6 @@ public interface OrderService {
 	public void cancel(UUID orderId);
 	public void match(UUID orderId);
 	public List<Order> list(Customer customer, Instant from, Instant to, OrderStatus status, String assetName);
+	public Page<Order> list(Customer customer, Instant from, Instant to, OrderStatus status, String assetName,
+			Pageable pageable);
 }

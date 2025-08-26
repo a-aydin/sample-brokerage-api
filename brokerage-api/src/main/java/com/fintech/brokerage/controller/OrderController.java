@@ -3,11 +3,15 @@ package com.fintech.brokerage.controller;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Sort;
 
 import com.fintech.brokerage.controller.dto.*;
 import com.fintech.brokerage.entity.*;
@@ -76,6 +80,32 @@ public class OrderController {
 
         log.info("Found {} orders for customerId={}", orders.size(), customerId);
         return orders;
+    }
+    
+    @GetMapping("/paged")
+    public Page<OrderResponse> listPaged(@RequestParam UUID customerId,
+                                         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Optional<Instant> from,
+                                         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Optional<Instant> to,
+                                         @RequestParam(required = false) OrderStatus status,
+                                         @RequestParam(required = false) String assetName,
+                                         @PageableDefault(size = 20, sort = "createDate", direction = Sort.Direction.DESC)
+                                         Pageable pageable) {
+
+        Customer customer = customerService.findById(customerId)
+                .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
+
+        checkAccess(customer.getId());
+
+        Page<Order> page = orderService.list(
+                customer,
+                from.orElse(null),
+                to.orElse(null),
+                status,
+                assetName,
+                pageable
+        );
+
+        return page.map(OrderResponse::new);
     }
 
     @DeleteMapping("/{orderId}")

@@ -25,6 +25,9 @@ public class Asset {
     @Column(name = "usable_size", nullable = false, precision = 19, scale = 4)
     private BigDecimal usableSize;
 
+    @Version
+    private Long version; // optimistic locking for concurrent balance adjustments
+    
     protected Asset() {}
 
     public Asset(Customer customerId, String assetName, BigDecimal size, BigDecimal usableSize) {
@@ -42,4 +45,10 @@ public class Asset {
 
     public void setSize(BigDecimal size) { this.size = size; }
     public void setUsableSize(BigDecimal usableSize) { this.usableSize = usableSize; }
+    
+    // helper methods to keep arithmetic consistent
+    public void addToUsable(BigDecimal delta) { this.usableSize = this.usableSize.add(delta); }
+    public void subFromUsable(BigDecimal delta) { this.usableSize = this.usableSize.subtract(delta); }
+    public void addToTotal(BigDecimal delta) { this.size = this.size.add(delta); }
+    public void subFromTotal(BigDecimal delta) { this.size = this.size.subtract(delta); }
 }
