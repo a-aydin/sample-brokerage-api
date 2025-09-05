@@ -26,7 +26,7 @@ public class Asset {
     private BigDecimal usableSize;
 
     @Version
-    private Long version; // optimistic locking for concurrent balance adjustments
+    private long version; // optimistic locking for concurrent balance adjustments
     
     protected Asset() {}
 
